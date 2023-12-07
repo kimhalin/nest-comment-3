@@ -1,6 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { DataSource, Repository } from 'typeorm';
 import { Member } from './member.entity';
+import { ResourceNotFoundException } from '../../common/error/custom-exception';
+import { ErrorMessages } from './constant';
 
 @Injectable()
 export class MemberRepository extends Repository<Member> {
@@ -16,7 +18,7 @@ export class MemberRepository extends Repository<Member> {
     });
 
     if (!member) {
-      throw new Error('Member not found');
+      throw new ResourceNotFoundException(ErrorMessages.ERROR_NOT_FOUND_MEMBER);
     }
 
     return member;
@@ -29,7 +31,7 @@ export class MemberRepository extends Repository<Member> {
       },
     });
     if (!member) {
-      throw new Error('Member not found');
+      throw new ResourceNotFoundException(ErrorMessages.ERROR_NOT_FOUND_MEMBER);
     }
 
     return member;

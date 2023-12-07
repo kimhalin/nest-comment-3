@@ -4,12 +4,13 @@ import {
   DeleteDateColumn,
   Entity,
   ManyToOne,
-  PrimaryColumn,
+  PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { contentLength } from './constant';
+import { contentLength, ErrorMessages } from './constant';
 import { Post } from '../post/post.entity';
 import { Member } from '../member/member.entity';
+import { InvalidParameterException } from '../../common/error/custom-exception';
 
 @Entity()
 export class Comment {
@@ -34,7 +35,7 @@ export class Comment {
   @Column({ default: 0 })
   reportCount: number;
 
-  @PrimaryColumn()
+  @PrimaryGeneratedColumn()
   id: number;
 
   @CreateDateColumn()
@@ -56,8 +57,8 @@ export class Comment {
       content.length < contentLength.MIN_LENGTH ||
       content.length > contentLength.MAX_LENGTH
     ) {
-      throw new Error(
-        `댓글은 ${contentLength.MIN_LENGTH}자 이상 ${contentLength.MAX_LENGTH}자 이하로 입력해주세요.`,
+      throw new InvalidParameterException(
+        ErrorMessages.ERROR_INVALID_CONTENT_LENGTH,
       );
     }
     const comment = new Comment();

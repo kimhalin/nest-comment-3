@@ -3,6 +3,7 @@ import { AppModule } from './app.module';
 import { initializeTransactionalContext } from 'typeorm-transactional';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ValidationPipe } from '@nestjs/common';
+import { HttpExceptionFilter } from './infra/filter/http-exception.filter';
 
 async function bootstrap() {
   initializeTransactionalContext();
@@ -24,6 +25,9 @@ async function bootstrap() {
 
   // ---------------------------- Global Pipe 설정 ----------------------------
   app.useGlobalPipes(new ValidationPipe({ transform: true }));
+
+  // ---------------------------- Global Filter 설정 ----------------------------
+  app.useGlobalFilters(new HttpExceptionFilter());
 
   await app.listen(process.env.PORT || 8000);
 
