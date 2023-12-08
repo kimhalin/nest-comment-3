@@ -25,6 +25,7 @@ const entities = [Comment, Member, Post];
           entities: [...entities],
           synchronize: process.env.DB_SYNC === 'true',
           timezone: 'Z',
+          logging: true,
         };
       },
       async dataSourceFactory(options) {
